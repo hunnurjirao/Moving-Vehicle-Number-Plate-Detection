@@ -14,6 +14,15 @@ from sklearn.preprocessing import LabelEncoder
 from utils import detect_lp
 
 def load_model(path):
+    """Loads a machine learning model from JSON and H5 files.
+    Parameters:
+        - path (str): Path to the model files without the extension.
+    Returns:
+        - Keras Model: The loaded Keras model object.
+    Processing Logic:
+        - The file extension is removed from the given path using splitext.
+        - Model structure is loaded from a JSON file.
+        - Weights are loaded from an H5 file."""
     try:
         path = splitext(path)[0]
         with open('%s.json' % path, 'r') as json_file:
