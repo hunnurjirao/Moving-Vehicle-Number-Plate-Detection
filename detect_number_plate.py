@@ -14,6 +14,15 @@ from sklearn.preprocessing import LabelEncoder
 from utils import detect_lp
 
 def load_model(path):
+    """Loads a model from JSON and H5 files.
+    Parameters:
+        - path (str): The file path without extension where the model JSON and H5 files are stored.
+    Returns:
+        - Keras Model: The model that is loaded from the files.
+    Processing Logic:
+        - The path passed by the user is expected to have no file extension.
+        - This function concatenates '.json' and '.h5' to the path for locating the respective files.
+        - The model is reconstructed from the JSON file, and weights are loaded from the H5 file."""
     try:
         path = splitext(path)[0]
         with open('%s.json' % path, 'r') as json_file:
@@ -99,6 +108,18 @@ def predict_from_model(image,model,labels):
     return prediction
 
 def draw_box(image_path, cor, thickness=3,text=""): 
+    """Draws a box with text around a specified region in an image.
+    Parameters:
+        - image_path (ndarray): The image where the box and text will be drawn.
+        - cor (list): The list of coordinates for the four corners of the box.
+        - thickness (int, optional): The thickness of the lines of the box. Default is 3.
+        - text (str, optional): The text label to put on the top-left corner of the box. Default is an empty string.
+    Returns:
+        - ndarray: The image with the box and text drawn on it.
+    Processing Logic:
+        - Converts coordinates into numpy array of shape suitable for cv2.polylines.
+        - Draws a box around the specified coordinates using cv2.polylines.
+        - Puts text at the top-left corner of the drawn box using cv2.putText."""
     pts=[]  
     x_coordinates=cor[0][0]
     y_coordinates=cor[0][1]
@@ -123,6 +144,16 @@ from datetime import datetime
 
 # start_time = time.time()
 def detect(frame):
+    """Detects and processes a vehicle's license plate number from an image frame.
+    Parameters:
+        - frame (numpy.ndarray): The image frame from which the license plate will be detected.
+    Returns:
+        - Tuple[bytes, str]: A tuple containing the JPEG image bytes of the processed frame and the detected plate number string.
+    Processing Logic:
+        - The function processes the image to locate the license plate and extract characters.
+        - It applies image processing techniques like conversion, thresholding, contour finding, and character segmentation.
+        - Utilizes a machine learning model to predict characters from segmented license plate regions.
+        - Overlays the detection results and timestamp on the image before returning it."""
     
     try:
         # i+=1
