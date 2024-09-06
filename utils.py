@@ -4,6 +4,18 @@ import numpy as np
 
 
 class Label:
+    """
+    Represents a bounding box label with class, position and probability.
+    Parameters:
+        - cl (int): Class label identifier, defaults to -1 if not specified.
+        - tl (numpy.array): Top-left coordinate of the bounding box as [x, y], defaults to [0., 0.] if not specified.
+        - br (numpy.array): Bottom-right coordinate of the bounding box as [x, y], defaults to [0., 0.] if not specified.
+        - prob (float, optional): Probability/confidence of the predicted label, defaults to None.
+    Processing Logic:
+        - The methods wh, cc, tl, br, tr, bl, cl, and area perform calculations related to bounding box geometry.
+        - Method copy returns a new instance of Label with the same attributes.
+        - Methods set_class, set_tl, set_br, set_wh, and set_prob allows modification of the label's class, corners, size, and probability, respectively.
+    """
     def __init__(self, cl=-1, tl=np.array([0., 0.]), br=np.array([0., 0.]), prob=None):
         self.__tl = tl
         self.__br = br
@@ -63,6 +75,19 @@ def getWH(shape):
     return np.array(shape[1::-1]).astype(float)
 
 def IOU(tl1, br1, tl2, br2):
+    """Calculates the Intersection over Union (IoU) between two rectangles.
+    Parameters:
+        - tl1 (ndarray): Top-left corner coordinates of the first rectangle.
+        - br1 (ndarray): Bottom-right corner coordinates of the first rectangle.
+        - tl2 (ndarray): Top-left corner coordinates of the second rectangle.
+        - br2 (ndarray): Bottom-right corner coordinates of the second rectangle.
+    Returns:
+        - float: The Intersection over Union (IoU) between two rectangles.
+    Processing Logic:
+        - Validate that the width and height of rectangles are non-negative.
+        - Calculate the intersection's width and height.
+        - Compute the area of both rectangles and their intersection.
+        - Calculate IoU by dividing the intersection area by the union area."""
     wh1, wh2 = br1-tl1, br2-tl2
     assert((wh1 >= 0).all() and (wh2 >= 0).all())
     

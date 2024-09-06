@@ -14,6 +14,14 @@ from sklearn.preprocessing import LabelEncoder
 from utils import detect_lp
 
 def load_model(path):
+    """Loads a model from JSON and H5 files.
+    Parameters:
+        - path (str): The path to the model files without the file extension.
+    Returns:
+        - Model: The loaded Model object if successful, None if an exception occurs.
+    Processing Logic:
+        - The file extension is stripped from the path to ensure only the base name is used.
+        - Model architecture and weights are loaded from separate files with assumed '.json' and '.h5' extensions."""
     try:
         path = splitext(path)[0]
         with open('%s.json' % path, 'r') as json_file:

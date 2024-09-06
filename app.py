@@ -29,6 +29,16 @@ def home():
 	return render_template('upload.html')
 
 def gen_frames(vid): 
+    """Generates frames from a video file and processes them to detect license plates.
+    Parameters:
+        - vid (str): The filename of the video file to process.
+    Returns:
+        - generator: A generator that yields processed video frames with detected license plate information.
+    Processing Logic:
+        - Frames are read from a video file located in a specified directory path.
+        - Every second frame is processed to detect license plates using the `detect` function.
+        - Detected plate numbers are stored in a database if they are new.
+        - The function yields frames in a format suitable for streaming via HTTP."""
     pat = "D:/Projects/16. Moving Vehicles Number Plate Recognition using Deep Learning/Updated Code/static/uploads/"+str(vid)
     camera = cv2.VideoCapture(pat)
     i=0
