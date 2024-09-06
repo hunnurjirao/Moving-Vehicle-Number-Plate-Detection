@@ -29,6 +29,15 @@ def home():
 	return render_template('upload.html')
 
 def gen_frames(vid): 
+    """Generates and streams video frames with detected number plates.
+    Parameters:
+        - vid (str): The video file name to process.
+    Returns:
+        - Generator: A byte-encoded JPEG image generator for streaming.
+    Processing Logic:
+        - Iterates over video frames and runs number plate detection every second frame.
+        - Updates the database with detected plate numbers with timestamps.
+        - Stops when video feed ends, indicating the process completion with a message."""
     pat = "D:/Projects/16. Moving Vehicles Number Plate Recognition using Deep Learning/Updated Code/static/uploads/"+str(vid)
     camera = cv2.VideoCapture(pat)
     i=0

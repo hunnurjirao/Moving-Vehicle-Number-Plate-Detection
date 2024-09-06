@@ -4,6 +4,19 @@ import numpy as np
 
 
 class Label:
+    """
+    Represents a bounding box label with class, position, and probability.
+    Parameters:
+        - cl (int): Class label identifier. Default is -1.
+        - tl (numpy.array[2,]): The top-left corner coordinates of the bounding box.
+        - br (numpy.array[2,]): The bottom-right corner coordinates of the bounding box.
+        - prob (float): The probability associated with the detected class. Default is None.
+    Processing Logic:
+        - The anchor point calculations (such as cc for center coordinates) are based on the top-left and bottom-right points.
+        - The 'wh' method calculates the width and height as a vector subtraction of bottom-right from top-left point.
+        - The 'area' method calculates the area of the bounding box by multiplying the width and height.
+        - Whenever width and height (set_wh) are set, top-left and bottom-right are recalculated to keep the center constant.
+    """
     def __init__(self, cl=-1, tl=np.array([0., 0.]), br=np.array([0., 0.]), prob=None):
         self.__tl = tl
         self.__br = br
@@ -63,6 +76,19 @@ def getWH(shape):
     return np.array(shape[1::-1]).astype(float)
 
 def IOU(tl1, br1, tl2, br2):
+    """Calculate the Intersection Over Union (IOU) of two bounding boxes.
+    Parameters:
+        - tl1 (array_like): The top-left coordinate of the first bounding box.
+        - br1 (array_like): The bottom-right coordinate of the first bounding box.
+        - tl2 (array_like): The top-left coordinate of the second bounding box.
+        - br2 (array_like): The bottom-right coordinate of the second bounding box.
+    Returns:
+        - float: The Intersection Over Union (IOU) between the two bounding boxes.
+    Processing Logic:
+        - Compute the width and height of each bounding box.
+        - Ensure the width and height are not negative.
+        - Calculate intersection's width and height, ensuring values are not negative.
+        - Compute the intersection area, both bounding boxes' areas, and the union area."""
     wh1, wh2 = br1-tl1, br2-tl2
     assert((wh1 >= 0).all() and (wh2 >= 0).all())
     
